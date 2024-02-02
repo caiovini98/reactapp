@@ -1,117 +1,95 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
-import React from 'react';
-import type {PropsWithChildren} from 'react';
+import React, {useState} from 'react';
 import {
-  SafeAreaView,
-  ScrollView,
-  StatusBar,
   StyleSheet,
   Text,
-  useColorScheme,
+  TextInput,
+  TouchableOpacity,
   View,
 } from 'react-native';
 
-import {
-  Colors,
-  DebugInstructions,
-  Header,
-  LearnMoreLinks,
-  ReloadInstructions,
-} from 'react-native/Libraries/NewAppScreen';
+function App(): React.JSX.Element {
+  const [newSkill, setNewSkill] = useState('');
+  const [newSkills, setNewSkills] = useState<Array<string>>([]);
 
-type SectionProps = PropsWithChildren<{
-  title: string;
-}>;
+  function handleAddNewSkill() {
+    setNewSkills(oldState => [...oldState, newSkill]);
+  }
 
-function Section({children, title}: SectionProps): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
   return (
-    <View style={styles.sectionContainer}>
-      <Text
-        style={[
-          styles.sectionTitle,
-          {
-            color: isDarkMode ? Colors.white : Colors.black,
-          },
-        ]}>
-        {title}
-      </Text>
-      <Text
-        style={[
-          styles.sectionDescription,
-          {
-            color: isDarkMode ? Colors.light : Colors.dark,
-          },
-        ]}>
-        {children}
-      </Text>
+    <View style={styles.container}>
+      <Text style={styles.title}>Bem vindo, Caio</Text>
+
+      <TextInput
+        style={styles.input}
+        placeholder="New Skill"
+        placeholderTextColor="#555"
+        onChangeText={setNewSkill}
+      />
+
+      <TouchableOpacity
+        style={styles.button}
+        activeOpacity={0.7}
+        onPress={handleAddNewSkill}>
+        <Text style={styles.buttonText}>Add</Text>
+      </TouchableOpacity>
+
+      <Text style={[styles.title, {marginVertical: 35}]}>My Skills</Text>
+
+      {newSkills.map(skill => (
+        <TouchableOpacity
+          key={skill}
+          style={styles.buttonSkill}
+          activeOpacity={0.7}>
+          <Text style={styles.textSkill}>{skill}</Text>
+        </TouchableOpacity>
+      ))}
     </View>
   );
 }
 
-function App(): React.JSX.Element {
-  const isDarkMode = useColorScheme() === 'dark';
-
-  const backgroundStyle = {
-    backgroundColor: isDarkMode ? Colors.darker : Colors.lighter,
-  };
-
-  return (
-    <SafeAreaView style={backgroundStyle}>
-      <StatusBar
-        barStyle={isDarkMode ? 'light-content' : 'dark-content'}
-        backgroundColor={backgroundStyle.backgroundColor}
-      />
-      <ScrollView
-        contentInsetAdjustmentBehavior="automatic"
-        style={backgroundStyle}>
-        <Header />
-        <View
-          style={{
-            backgroundColor: isDarkMode ? Colors.black : Colors.white,
-          }}>
-          <Section title="Step One">
-            Edit <Text style={styles.highlight}>App.tsx</Text> to change this
-            screen and then come back to see your edits.
-          </Section>
-          <Section title="See Your Changes">
-            <ReloadInstructions />
-          </Section>
-          <Section title="Debug">
-            <DebugInstructions />
-          </Section>
-          <Section title="Learn More">
-            Read the docs to discover what to do next:
-          </Section>
-          <LearnMoreLinks />
-        </View>
-      </ScrollView>
-    </SafeAreaView>
-  );
-}
-
 const styles = StyleSheet.create({
-  sectionContainer: {
-    marginTop: 32,
-    paddingHorizontal: 24,
+  container: {
+    flex: 1,
+    backgroundColor: '#121015',
+    paddingHorizontal: 20,
+    paddingVertical: 70,
   },
-  sectionTitle: {
+  title: {
+    color: '#FFF',
     fontSize: 24,
-    fontWeight: '600',
+    fontWeight: 'bold',
   },
-  sectionDescription: {
-    marginTop: 8,
+  input: {
+    backgroundColor: '#1F1E25',
+    color: '#FFF',
     fontSize: 18,
-    fontWeight: '400',
+    padding: 10,
+    marginTop: 30,
+    borderRadius: 7,
   },
-  highlight: {
-    fontWeight: '700',
+  button: {
+    backgroundColor: '#A370F7',
+    padding: 15,
+    borderRadius: 7,
+    alignItems: 'center',
+    marginTop: 20,
+  },
+  buttonText: {
+    color: '#FFF',
+    fontSize: 17,
+    fontWeight: 'bold',
+  },
+  buttonSkill: {
+    backgroundColor: '#1F1E25',
+    padding: 15,
+    borderRadius: 50,
+    alignItems: 'center',
+    marginVertical: 10,
+  },
+  textSkill: {
+    color: '#FFF',
+    fontSize: 22,
+    fontWeight: 'bold',
   },
 });
 
